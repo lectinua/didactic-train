@@ -14,9 +14,9 @@ class LoginPage(driver: WebDriver) : BasePage(driver) {
   lateinit var inputPassword: WebElement
 
   @FindBy(css = "html > body > div:nth-of-type(4) > div > div > form > div > label:nth-of-type(3)")
-  lateinit var saveIdLabel: WebElement
+  lateinit var labelSaveId: WebElement
 
   @FindBy(css = "button[type='submit']")
-  lateinit var loginButton: WebElement
+  lateinit var buttonLogin: WebElement
 
 }
