@@ -16,7 +16,7 @@ open class BasePage(private val driver: WebDriver) {
   lateinit var content: WebElement
 
   fun wait4sec(seconds: Long = 1) {
-    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(seconds))
+    Thread.sleep(seconds * 1000)
   }
 
   fun wait4load(expectURL: String) {
