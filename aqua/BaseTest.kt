@@ -1,7 +1,7 @@
 package dev.lect.aqua
 
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.StaleElementReferenceException
 import org.openqa.selenium.WebDriver
@@ -14,23 +14,27 @@ import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.WebDriverWait
 import java.time.Duration
 
-open class BaseTest(private val baseURL: String) {
-  protected lateinit var driver: WebDriver
+abstract class BaseTest(private val baseURL: String) {
   protected var timeout = Duration.ofSeconds(10L)
   
-  @BeforeEach
-  fun setUp() {
-    val options = ChromeOptions()
-    options.addArguments("--remote-allow-origins=*")
-    driver = ChromeDriver(options)
-    driver.manage().window().maximize()
-    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10))
-    driver.get(baseURL)
-  }
-  
-  @AfterEach
-  fun tearDown() {
-    driver.quit()
+  companion object {
+    lateinit var driver: WebDriver
+    
+    @BeforeAll
+    @JvmStatic
+    fun setUp() {
+      val options = ChromeOptions()
+      options.addArguments("--remote-allow-origins=*")
+      driver = ChromeDriver(options)
+      driver.manage().window().maximize()
+      driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10))
+    }
+    
+    @AfterAll
+    @JvmStatic
+    fun tearDown() {
+      driver.quit()
+    }
   }
   
   fun navigate(uri: String) {
