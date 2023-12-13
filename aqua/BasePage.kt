@@ -21,22 +21,28 @@ open class BasePage(private val driver: WebDriver) {
     Thread.sleep(seconds * 1000)
   }
   
-  fun wait4load(expectURL: String) {
+  fun waitUntilUrlEq(expectURL: String) {
     val message = "url이 예상과 다름: ${driver.currentUrl} != $expectURL"
     val wait = WebDriverWait(driver, timeout).withMessage(message)
     wait.until(ExpectedConditions.urlToBe(expectURL))
   }
   
-  fun wait4load() {
-    val message = "url이 바뀌지 않음: ${driver.currentUrl}"
+  fun waitUntilUrlNe(originalURL: String) {
+    val message = "url이 바뀌지 않음: ${originalURL}"
     val wait = WebDriverWait(driver, timeout).withMessage(message)
-    wait.until(urlNotToBe(driver.currentUrl))
+    wait.until(urlNotToBe(originalURL))
   }
   
-  fun wait4text(element: WebElement, text: String) {
+  fun waitUntilTextEq(element: WebElement, text: String) {
     val message = "값이 예상과 다름: ${driver.currentUrl}"
     val wait = WebDriverWait(driver, timeout).withMessage(message)
     wait.until(textEquals(element, text))
+  }
+  
+  fun waitUntilCustom(condition: ExpectedCondition<Boolean>) {
+    val message = "값이 예상과 다름: ${driver.currentUrl}"
+    val wait = WebDriverWait(driver, timeout).withMessage(message)
+    wait.until(condition)
   }
   
   fun script(script: String) {
@@ -54,6 +60,10 @@ open class BasePage(private val driver: WebDriver) {
     return js.executeScript("return arguments[0].value", element) as String
   }
   
+  fun customCondition(applier: (WebDriver) -> Boolean): ExpectedCondition<Boolean> {
+    return ExpectedCondition<Boolean> { driver -> applier(driver) }
+  }
+  
   private fun urlNotToBe(url: String): ExpectedCondition<Boolean> {
     return object : ExpectedCondition<Boolean> {
       private var currentUrl: String? = ""
@@ -61,10 +71,6 @@ open class BasePage(private val driver: WebDriver) {
       override fun apply(driver: WebDriver): Boolean {
         this.currentUrl = driver.currentUrl
         return this.currentUrl != null && (this.currentUrl != url)
-      }
-      
-      override fun toString(): String {
-        return "url not to be \"$url\". Current url: \"${this.currentUrl}\""
       }
     }
   }
@@ -80,10 +86,6 @@ open class BasePage(private val driver: WebDriver) {
         } catch (var3: StaleElementReferenceException) {
           return false
         }
-      }
-      
-      override fun toString(): String {
-        return "text ('$text') to be the value of element $element"
       }
     }
   }
