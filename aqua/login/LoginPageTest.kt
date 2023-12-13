@@ -8,7 +8,7 @@ open class LoginPageTest : BaseTest("http://localhost:9090") {
   
   @Test
   @Order(1)
-  fun login() {
+  fun 로그인() {
     val page = navigate("/login", LoginPage::class.java)
     
     page.inputUsername.sendKeys("system")
@@ -17,7 +17,7 @@ open class LoginPageTest : BaseTest("http://localhost:9090") {
     page.buttonLogin.click()
     
     waitUntilUrlNe("http://localhost:9090/login")
-    waitAndToast(5)
+    waitAndToast(5, "로그인 성공")
   }
   
   protected fun waitAndToast(

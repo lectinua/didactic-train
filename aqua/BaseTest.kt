@@ -2,10 +2,7 @@ package dev.lect.aqua
 
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
-import org.openqa.selenium.JavascriptExecutor
-import org.openqa.selenium.StaleElementReferenceException
-import org.openqa.selenium.WebDriver
-import org.openqa.selenium.WebElement
+import org.openqa.selenium.*
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.support.PageFactory
@@ -66,10 +63,16 @@ abstract class BaseTest(private val baseURL: String) {
     wait.until(urlNotToBe("$baseURL$sourceURI"))
   }
   
-  fun waitUntilTextEq(element: WebElement, text: String) {
+  fun waitUntilValueEq(element: WebElement, text: String) {
     val message = "값이 예상과 다름: ${driver.currentUrl}"
     val wait = WebDriverWait(driver, timeout).withMessage(message)
     wait.until(textEquals(element, text))
+  }
+  
+  fun waitUntilFind(by: By) {
+    val message = "요소를 찾지 못함: $by"
+    val wait = WebDriverWait(driver, timeout).withMessage(message)
+    wait.until(ExpectedConditions.presenceOfElementLocated(by))
   }
   
   fun waitUntilCustom(condition: ExpectedCondition<Boolean>) {
