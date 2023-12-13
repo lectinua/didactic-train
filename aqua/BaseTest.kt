@@ -29,4 +29,9 @@ open class BaseTest<Page : BasePage>(private val url: String, private val clazz:
     driver.quit()
   }
 
+  fun navigate(url: String) {
+    driver.navigate().to(url)
+    PageFactory.initElements(driver, this)
+  }
+
 }

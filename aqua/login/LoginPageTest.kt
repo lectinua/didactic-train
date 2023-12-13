@@ -3,7 +3,7 @@ package dev.lect.aqua.login
 import dev.lect.aqua.BaseTest
 import org.junit.jupiter.api.Test
 
-class LoginPageTest : BaseTest<LoginPage>("http://localhost:9090/login", LoginPage::class.java) {
+open class LoginPageTest : BaseTest<LoginPage>("http://localhost:9090/login", LoginPage::class.java) {
 
   @Test
   fun login() {
