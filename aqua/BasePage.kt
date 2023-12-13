@@ -44,7 +44,12 @@ open class BasePage(private val driver: WebDriver) {
     js.executeScript(script)
   }
   
-  fun inputValue(element: WebElement): String {
+  fun setInputValue(element: WebElement, vararg input: CharSequence) {
+    element.click()
+    element.sendKeys(*input)
+  }
+  
+  fun getInputValue(element: WebElement): String {
     val js: JavascriptExecutor = driver as JavascriptExecutor
     return js.executeScript("return arguments[0].value", element) as String
   }
@@ -70,7 +75,7 @@ open class BasePage(private val driver: WebDriver) {
     return object : ExpectedCondition<Boolean> {
       override fun apply(driver: WebDriver): Boolean {
         try {
-          val value = inputValue(element)
+          val value = getInputValue(element)
           return value == text
         } catch (var3: StaleElementReferenceException) {
           return false
