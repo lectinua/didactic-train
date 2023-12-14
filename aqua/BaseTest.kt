@@ -57,7 +57,7 @@ abstract class BaseTest(private val baseURL: String) {
     wait.until(ExpectedConditions.urlToBe(expectURI))
   }
   
-  fun waitUntilUrlNe(sourceURI: String) {
+  fun waitUntilUriNe(sourceURI: String) {
     val message = "url이 바뀌지 않음: ${sourceURI}"
     val wait = WebDriverWait(driver, timeout).withMessage(message)
     wait.until(urlNotToBe("$baseURL$sourceURI"))
